@@ -48,12 +48,12 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
   public void startPayment(ReadableMap options) {
     Activity currentActivity = getCurrentActivity();
     PaytmPGService Service;
-    if(options.getString("mode").equals("Production")){
-        Service = PaytmPGService.getProductionService();
+    if (options.getString("mode").equals("Production")) {
+      Service = PaytmPGService.getProductionService();
     } else {
-        Service = PaytmPGService.getStagingService();
+      Service = PaytmPGService.getStagingService();
     }
-    Map<String, String> paramMap = new Map<String, String>();
+    Map paramMap = new HashMap<>();
     paramMap.put("ORDER_ID", options.getString("orderId"));
     paramMap.put("MID", options.getString("mid"));
     paramMap.put("CUST_ID", options.getString("custId"));
@@ -61,19 +61,16 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
     paramMap.put("INDUSTRY_TYPE_ID", options.getString("industryType"));
     paramMap.put("WEBSITE", options.getString("website"));
     paramMap.put("TXN_AMOUNT", options.getString("amount"));
-    paramMap.put("EMAIL", options.getString("email"));
-    paramMap.put("MOBILE_NO", options.getString("phone"));
     paramMap.put("CALLBACK_URL", options.getString("callback"));
     paramMap.put("CHECKSUMHASH", options.getString("checksumhash"));
     PaytmOrder Order = new PaytmOrder(paramMap);
 
-/*
-    PaytmMerchant Merchant = new PaytmMerchant(
-        options.getString("generationUrl"),
-        options.getString("validationUrl"));
-
-    Service.initialize(Order, Merchant, null);
-*/
+    /*
+     * PaytmMerchant Merchant = new PaytmMerchant(
+     * options.getString("generationUrl"), options.getString("validationUrl"));
+     * 
+     * Service.initialize(Order, Merchant, null);
+     */
     Service.initialize(Order, null);
 
     Service.startPaymentTransaction(getCurrentActivity(), true, true, new PaytmPaymentTransactionCallback() {
@@ -82,7 +79,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "PayTM Error: Some UI Error Occurred " + inErrorMessage);
         WritableMap params = new WritableNativeMap();
         params.putString("status", "UIErrorOccurred");
-        sendEvent( "PayTMResponse", params);
+        sendEvent("PayTMResponse", params);
       }
 
       @Override
@@ -90,7 +87,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "Payment Transaction Resnponse " + inResponse);
         WritableMap params = Arguments.fromBundle(inResponse);
         params.putString("status", "Response");
-        sendEvent( "PayTMResponse", params);
+        sendEvent("PayTMResponse", params);
       }
 
       @Override
@@ -98,7 +95,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "Network Not Available");
         WritableMap params = new WritableNativeMap();
         params.putString("status", "NetworkNotAvailable");
-        sendEvent( "PayTMResponse", params);
+        sendEvent("PayTMResponse", params);
       }
 
       @Override
@@ -106,7 +103,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "Clinet Authentication Failed" + inErrorMessage);
         WritableMap params = new WritableNativeMap();
         params.putString("status", "ClientAuthenticationFailed");
-        sendEvent( "PayTMResponse", params );
+        sendEvent("PayTMResponse", params);
       }
 
       @Override
@@ -114,7 +111,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "Error Loading WebPage" + inErrorMessage);
         WritableMap params = new WritableNativeMap();
         params.putString("status", "ErrorLoadingWebPage");
-        sendEvent( "PayTMResponse", params );
+        sendEvent("PayTMResponse", params);
       }
 
       // had to be added: NOTE
@@ -123,7 +120,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "Cancelled: Back");
         WritableMap params = new WritableNativeMap();
         params.putString("status", "Cancelled: Back");
-        sendEvent( "PayTMResponse", params);
+        sendEvent("PayTMResponse", params);
       }
 
       @Override
@@ -131,15 +128,13 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
         Log.d("LOG", "Cancelled: " + inErrorMessage);
         WritableMap params = Arguments.fromBundle(inResponse);
         params.putString("status", "Cancelled");
-        sendEvent( "PayTMResponse", params);
+        sendEvent("PayTMResponse", params);
       }
-    });      
+    });
   }
 
   private void sendEvent(String eventName, @Nullable WritableMap params) {
-  reactContext
-      .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-      .emit(eventName, params);
+    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
   }
-   
+
 }
