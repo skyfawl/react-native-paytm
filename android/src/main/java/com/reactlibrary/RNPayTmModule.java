@@ -53,7 +53,7 @@ public class RNPayTmModule extends ReactContextBaseJavaModule {
     } else {
         Service = PaytmPGService.getStagingService();
     }
-    Map<String, String> paramMap = new HashMap<String, String>();
+    Map<String, String> paramMap = new Map<String, String>();
     paramMap.put("ORDER_ID", options.getString("orderId"));
     paramMap.put("MID", options.getString("mid"));
     paramMap.put("CUST_ID", options.getString("custId"));
