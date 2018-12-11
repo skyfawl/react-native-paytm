@@ -4,7 +4,7 @@ This library has been forked from https://github.com/elanic-tech/react-native-pa
 Updated it to work with the latest version of react-native and latest PayTM SDK (December 2018). 
 ## Getting started
 
-Alert: Built and tested only for iOS.
+Alert: Tested for both ios & android
 
 ### installation
 
