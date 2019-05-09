@@ -1,19 +1,27 @@
 //
-//  PaymentSDK.h
-//  PaymentSDK
+//  PaymentsSDK.h
+//  PaymentsSDK
 //
-//  Created by Sachin Thakur on 28/08/17.
-//  Copyright © 2017 Paytm. All rights reserved.
-//
+//  Copyright (c) 2012-2015 Paytm Mobile Solutions Ltd. All rights reserved.
 
-#import <UIKit/UIKit.h>
+#ifndef __PAYMENTS_SDK_H__
+#define __PAYMENTS_SDK_H__
 
-//! Project version number for PaymentSDK.
-FOUNDATION_EXPORT double PaymentSDKVersionNumber;
+#import <Foundation/Foundation.h>
 
-//! Project version string for PaymentSDK.
-FOUNDATION_EXPORT const unsigned char PaymentSDKVersionString[];
+#import "PGTransactionViewController.h"
+#import "PGMerchantConfiguration.h"
+#import "PGServerEnvironment.h"
+#import "PGOrder.h"
 
-// In this header, you should import all the public headers of your framework using statements like #import <PaymentSDK/PublicHeader.h>
+#define PGSDK_VERSION   @"2.7"
 
+#ifdef DEBUG
+#define DEBUGLOG    NSLog
+#else
+#define DEBUGLOG(x,...) //
+#endif
 
+#define CFSafeRelease(x) if (x != nil) CFRelease(x);
+
+#endif
